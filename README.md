@@ -57,7 +57,7 @@ docs/pipeline.md         — detailed pipeline documentation
 
 ## Based on
 
-FAU Erlangen-Nürnberg BiViP Lab 8 (Exercise 8.5),
+FAU Erlangen-Nürnberg BiViP Lab,
 extended with:
 
 - Moving average filter on angle output
