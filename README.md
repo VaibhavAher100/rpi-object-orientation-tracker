@@ -102,6 +102,11 @@ edge profile matches the pen classifier. Tuning `minNeighbors` reduces it.
   collar and jacket edges, giving 0.0 angle readings.
 - Haar cascade can miss detections in low contrast or poor lighting.
   Tuning `scaleFactor` and `minNeighbors` in `detector.py` helps.
+- Angle is measured for the first detected object per frame only. When multiple
+  objects are present, `object_count` reflects the total detections but
+  `raw_angle` and `filtered_angle` correspond to the first bounding box only.
+  This is by design for simplicity — a multi-object tracker would require
+  separate angle tracking per object ID.
 
   ---
 
