@@ -12,6 +12,10 @@ def load_results(filepath: str) -> tuple:
     Read detections CSV and return four lists:
     timestamps, raw_angles, filtered_angles, object_counts.
     """
+    if not os.path.isfile(filepath):
+        print("No CSV file found. Run detector.py first.")
+        return None, None, None, None
+
     timestamps, raw_angles, filtered_angles, object_counts = [], [], [], []
 
     with open(filepath, "r") as f:
@@ -48,7 +52,8 @@ def plot_results(
     axes[0].set_ylim(-5, 185)
     axes[0].grid(True)
 
-    axes[1].plot(timestamps, filtered_angles, color="darkorange", linewidth=0.8)
+    axes[1].plot(timestamps, filtered_angles,
+                 color="darkorange", linewidth=0.8)
     axes[1].set_ylabel("Filtered Angle (°)")
     axes[1].set_ylim(-5, 185)
     axes[1].grid(True)
@@ -65,6 +70,7 @@ def plot_results(
 
 
 if __name__ == "__main__":
-    timestamps, raw_angles, filtered_angles, object_counts = load_results(LOG_FILE)
+    timestamps, raw_angles, filtered_angles, object_counts = load_results(
+        LOG_FILE)
     if timestamps is not None:
         plot_results(timestamps, raw_angles, filtered_angles, object_counts)
