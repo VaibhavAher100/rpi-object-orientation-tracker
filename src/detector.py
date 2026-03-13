@@ -15,16 +15,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="RPi5 Object Orientation Tracker")
+    parser = argparse.ArgumentParser(
+        description="RPi5 Object Orientation Tracker")
     parser.add_argument(
         "--cascade",
-        default=os.path.join(BASE_DIR, "classifiers", "pen_vertical_classifier.xml"),
+        default=os.path.join(BASE_DIR, "classifiers",
+                             "pen_vertical_classifier.xml"),
         help="Path to Haar cascade XML file",
     )
     parser.add_argument(
         "--source",
-        default=os.path.join(BASE_DIR, "foreground.mp4"),
-        help="Video file path or camera index (default: foreground.mp4)",
+        default="0",
+        help="Video file path or camera index (default: 0 = webcam)"
     )
     parser.add_argument(
         "--log",
@@ -84,7 +86,8 @@ def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
         angle = angle_deg - 180 if angle_deg > 180 else angle_deg
 
         cv2.putText(
-            image, f"{angle:.1f}", (10, 25), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2
+            image, f"{angle:.1f}", (10,
+                                    25), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2
         )
 
         return angle
@@ -138,7 +141,8 @@ def run(args) -> None:
             if not ret:
                 break
 
-        gray = cv2.cvtColor(cv2.GaussianBlur(frame, (5, 5), 0), cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(cv2.GaussianBlur(
+            frame, (5, 5), 0), cv2.COLOR_BGR2GRAY)
 
         objects = clf.detectMultiScale(
             gray,
@@ -150,7 +154,8 @@ def run(args) -> None:
 
         raw_angle = -1.0
         filtered_angle = -1.0
-        object_count = len(objects) if objects is not None and len(objects) > 0 else 0
+        object_count = len(objects) if objects is not None and len(
+            objects) > 0 else 0
 
         for x, y, w, h in objects:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -158,7 +163,8 @@ def run(args) -> None:
             if raw_angle >= 0:
                 filtered_angle = update_filter(window, raw_angle)
 
-        log_result(args.log, time.time(), raw_angle, filtered_angle, object_count)
+        log_result(args.log, time.time(), raw_angle,
+                   filtered_angle, object_count)
 
         cv2.imshow("detector", frame)
         if cv2.waitKey(1) & 0xFF == ord("q"):
