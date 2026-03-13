@@ -61,7 +61,7 @@ def plot_results(
     axes[2].plot(timestamps, object_counts, color="green", linewidth=0.8)
     axes[2].set_ylabel("Object Count")
     axes[2].set_xlabel("Time (seconds)")
-    axes[2].set_ylim(-0.5, 3)
+    axes[2].set_ylim(-0.5, max(object_counts) + 1)
     axes[2].grid(True)
 
     plt.tight_layout()
