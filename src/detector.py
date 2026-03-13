@@ -157,11 +157,14 @@ def run(args) -> None:
         object_count = len(objects) if objects is not None and len(
             objects) > 0 else 0
 
-        for x, y, w, h in objects:
+        first_detection = True
+        for (x, y, w, h) in objects:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            raw_angle = hough_transform(x, y, w, h, frame)
+            if first_detection:
+                raw_angle = hough_transform(x, y, w, h, frame)
             if raw_angle >= 0:
                 filtered_angle = update_filter(window, raw_angle)
+            first_detection = False
 
         log_result(args.log, time.time(), raw_angle,
                    filtered_angle, object_count)
