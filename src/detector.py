@@ -1,4 +1,5 @@
 import cv2
+from matplotlib import lines
 import numpy as np
 import time
 import os
@@ -72,7 +73,10 @@ def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
     if lines is None:
         return -1.0
 
-    for rho, theta in lines[0]:
+    # Select line closest to vertical (90°) instead of blindly taking lines[0]
+    best_line = min(lines, key=lambda l: abs(l[0][1] - np.pi / 2))
+
+    for rho, theta in best_line:
         a, b = np.cos(theta), np.sin(theta)
         x0_l, y0_l = a * rho, b * rho
         x1_l = int(x0_l + 1000 * (-b))
