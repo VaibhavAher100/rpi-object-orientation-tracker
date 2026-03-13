@@ -9,8 +9,7 @@ measures their orientation angle in real time.
 ### 1. Camera Input
 Picamera2 captures frames at 640x480.
 Each frame is a NumPy array (XRGB8888 format).
-On laptop, cv2.VideoCapture is used instead — set USE_PICAMERA = False
-in detector.py or pass --no-picamera via CLI.
+On laptop, cv2.VideoCapture is used instead — pass --no-picamera via CLI.
 
 ### 2. Preprocessing
 - Convert to grayscale (cv2.cvtColor)
