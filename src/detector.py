@@ -6,8 +6,6 @@ import numpy as np
 import cv2
 from angle_filter import update_filter
 from logger import log_result
-import sys
-print(sys.executable)
 
 
 # -----------------------------------------------------------------------------
