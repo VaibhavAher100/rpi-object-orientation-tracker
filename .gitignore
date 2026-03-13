@@ -1,3 +1,9 @@
+*.mp4
+results/*.csv
+.venv/
+__pycache__/
+*.pyc
+test_results.csv
 *.code-workspace
 
 # Byte-compiled / optimized / DLL files
