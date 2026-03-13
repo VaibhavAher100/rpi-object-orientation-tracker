@@ -1,12 +1,14 @@
-import cv2
-import numpy as np
-import time
-import os
-import argparse
 from collections import deque
-
+import argparse
+import os
+import time
+import numpy as np
+import cv2
 from angle_filter import update_filter
 from logger import log_result
+import sys
+print(sys.executable)
+
 
 # -----------------------------------------------------------------------------
 # Paths — resolved from repo root regardless of where the script is called from
@@ -157,11 +159,10 @@ def run(args) -> None:
 
         raw_angle = -1.0
         filtered_angle = -1.0
-        if object_count == 0:
-            window.clear()
-
         object_count = len(objects) if objects is not None and len(
             objects) > 0 else 0
+        if object_count == 0:
+            window.clear()
 
         first_detection = True
         for (x, y, w, h) in objects:
