@@ -1,5 +1,4 @@
 import cv2
-from matplotlib import lines
 import numpy as np
 import time
 import os
