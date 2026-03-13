@@ -157,6 +157,9 @@ def run(args) -> None:
 
         raw_angle = -1.0
         filtered_angle = -1.0
+        if object_count == 0:
+            window.clear()
+
         object_count = len(objects) if objects is not None and len(
             objects) > 0 else 0
 
