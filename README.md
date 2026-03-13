@@ -34,10 +34,21 @@ in `detector.py`.
 ---
 
 ## How to run
+
+**On laptop (testing mode):**
 ```bash
 git clone https://github.com/VaibhavAher100/rpi-object-orientation-tracker
 cd rpi-object-orientation-tracker
 pip install -r requirements.txt
+python src/detector.py
+```
+
+**On RPi5:**
+```bash
+git clone https://github.com/VaibhavAher100/rpi-object-orientation-tracker
+cd rpi-object-orientation-tracker
+pip install -r requirements-rpi.txt
+# set USE_PICAMERA = True in src/detector.py
 python src/detector.py
 ```
 
@@ -62,6 +73,9 @@ classifiers/
 
 results/
     angle_trace.png        sample output plot
+    detection_sample_1.png best case detection
+    detection_sample_2.png partial detection
+    detection_sample_3.png worst case — multiple false positives
 ```
 
 ---
