@@ -104,3 +104,25 @@ edge profile matches the pen classifier. Tuning `minNeighbors` reduces it.
   collar and jacket edges, giving 0.0 angle readings.
 - Haar cascade can miss detections in low contrast or poor lighting.
   Tuning `scaleFactor` and `minNeighbors` in `detector.py` helps.
+
+  ---
+
+## Performance (Raspberry Pi 5)
+
+Measured on Raspberry Pi 5 (1GB) during BiViP lab sessions.
+
+| Metric | Value |
+|--------|-------|
+| Resolution | 640 × 480 |
+| Frame rate | 10 fps |
+| GrabCut per frame (5 iterations) | ~1.0 sec |
+| GrabCut per frame (1 iteration) | ~0.42 sec |
+| Alpha channel conversion | ~0.015 sec |
+| Pipeline target | real-time at 10 fps |
+
+GrabCut is not part of the orientation tracker pipeline — timings are from
+the BiViP Lab 9 background replacement exercise on the same hardware,
+included here as embedded CV performance reference.
+
+The orientation tracker itself (Haar detection + Canny + Hough + filter + log)
+runs comfortably within a 100ms frame budget at 10 fps on RPi5.
