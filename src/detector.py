@@ -15,34 +15,32 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="RPi5 Object Orientation Tracker")
+    parser = argparse.ArgumentParser(description="RPi5 Object Orientation Tracker")
     parser.add_argument(
         "--cascade",
-        default=os.path.join(BASE_DIR, "classifiers",
-                             "pen_vertical_classifier.xml"),
-        help="Path to Haar cascade XML file"
+        default=os.path.join(BASE_DIR, "classifiers", "pen_vertical_classifier.xml"),
+        help="Path to Haar cascade XML file",
     )
     parser.add_argument(
         "--source",
         default=os.path.join(BASE_DIR, "foreground.mp4"),
-        help="Video file path or camera index (default: foreground.mp4)"
+        help="Video file path or camera index (default: foreground.mp4)",
     )
     parser.add_argument(
         "--log",
         default=os.path.join(BASE_DIR, "results", "detections.csv"),
-        help="Path to output CSV log file"
+        help="Path to output CSV log file",
     )
     parser.add_argument(
         "--window",
         type=int,
         default=5,
-        help="Moving average filter window size (default: 5)"
+        help="Moving average filter window size (default: 5)",
     )
     parser.add_argument(
         "--no-picamera",
         action="store_true",
-        help="Use cv2.VideoCapture instead of Picamera2"
+        help="Use cv2.VideoCapture instead of Picamera2",
     )
     return parser.parse_args()
 
@@ -55,19 +53,9 @@ def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
     """
     height, width = image.shape[:2]
 
-    if (
-        x - 200 >= 0
-        and y - 100 >= 0
-        and x + w + 200 <= width
-        and y + h + 100 <= height
-    ):
+    if x - 200 >= 0 and y - 100 >= 0 and x + w + 200 <= width and y + h + 100 <= height:
         x0, y0, x1, y1 = x - 200, y - 100, x + w + 200, y + h + 100
-    elif (
-        x - 40 >= 0
-        and y - 20 >= 0
-        and x + w + 40 <= width
-        and y + h + 20 <= height
-    ):
+    elif x - 40 >= 0 and y - 20 >= 0 and x + w + 40 <= width and y + h + 20 <= height:
         x0, y0, x1, y1 = x - 40, y - 20, x + w + 40, y + h + 20
     else:
         x0, y0 = max(x, 0), max(y, 0)
@@ -95,8 +83,9 @@ def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
         angle_deg = theta * 180 / np.pi
         angle = angle_deg - 180 if angle_deg > 180 else angle_deg
 
-        cv2.putText(image, f"{angle:.1f}", (10, 25),
-                    cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        cv2.putText(
+            image, f"{angle:.1f}", (10, 25), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2
+        )
 
         return angle
 
@@ -116,10 +105,13 @@ def run(args) -> None:
 
     if use_picamera:
         from picamera2 import Picamera2
+
         picam2 = Picamera2()
-        picam2.configure(picam2.create_preview_configuration(
-            main={"format": "XRGB8888", "size": (640, 480)}
-        ))
+        picam2.configure(
+            picam2.create_preview_configuration(
+                main={"format": "XRGB8888", "size": (640, 480)}
+            )
+        )
         picam2.start()
         time.sleep(1)
     else:
@@ -146,8 +138,7 @@ def run(args) -> None:
             if not ret:
                 break
 
-        gray = cv2.cvtColor(cv2.GaussianBlur(
-            frame, (5, 5), 0), cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(cv2.GaussianBlur(frame, (5, 5), 0), cv2.COLOR_BGR2GRAY)
 
         objects = clf.detectMultiScale(
             gray,
@@ -159,17 +150,15 @@ def run(args) -> None:
 
         raw_angle = -1.0
         filtered_angle = -1.0
-        object_count = len(objects) if objects is not None and len(
-            objects) > 0 else 0
+        object_count = len(objects) if objects is not None and len(objects) > 0 else 0
 
-        for (x, y, w, h) in objects:
+        for x, y, w, h in objects:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             raw_angle = hough_transform(x, y, w, h, frame)
             if raw_angle >= 0:
                 filtered_angle = update_filter(window, raw_angle)
 
-        log_result(args.log, time.time(), raw_angle,
-                   filtered_angle, object_count)
+        log_result(args.log, time.time(), raw_angle, filtered_angle, object_count)
 
         cv2.imshow("detector", frame)
         if cv2.waitKey(1) & 0xFF == ord("q"):

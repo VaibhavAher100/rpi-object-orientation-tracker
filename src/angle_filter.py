@@ -17,8 +17,7 @@ if __name__ == "__main__":
 
     for angle in test_angles:
         result = update_filter(window, angle)
-        print(
-            f"new_angle={angle:.1f}  window={list(window)}  avg={result:.2f}")
+        print(f"new_angle={angle:.1f}  window={list(window)}  avg={result:.2f}")
 
 
 # =============================================================================

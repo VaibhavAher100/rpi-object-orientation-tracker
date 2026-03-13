@@ -14,7 +14,7 @@ def load_results(filepath: str) -> tuple:
     """
     timestamps, raw_angles, filtered_angles, object_counts = [], [], [], []
 
-    with open(filepath, 'r') as f:
+    with open(filepath, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             timestamps.append(float(row["timestamp"]))
@@ -33,7 +33,9 @@ def load_results(filepath: str) -> tuple:
     return timestamps, raw_angles, filtered_angles, object_counts
 
 
-def plot_results(timestamps: list, raw_angles: list, filtered_angles: list, object_counts: list) -> None:
+def plot_results(
+    timestamps: list, raw_angles: list, filtered_angles: list, object_counts: list
+) -> None:
     """
     Plot raw angle, filtered angle, and object count as three stacked subplots.
     Saves output to results/angle_trace.png.
@@ -46,8 +48,7 @@ def plot_results(timestamps: list, raw_angles: list, filtered_angles: list, obje
     axes[0].set_ylim(-5, 185)
     axes[0].grid(True)
 
-    axes[1].plot(timestamps, filtered_angles,
-                 color="darkorange", linewidth=0.8)
+    axes[1].plot(timestamps, filtered_angles, color="darkorange", linewidth=0.8)
     axes[1].set_ylabel("Filtered Angle (°)")
     axes[1].set_ylim(-5, 185)
     axes[1].grid(True)
@@ -64,7 +65,6 @@ def plot_results(timestamps: list, raw_angles: list, filtered_angles: list, obje
 
 
 if __name__ == "__main__":
-    timestamps, raw_angles, filtered_angles, object_counts = load_results(
-        LOG_FILE)
+    timestamps, raw_angles, filtered_angles, object_counts = load_results(LOG_FILE)
     if timestamps is not None:
         plot_results(timestamps, raw_angles, filtered_angles, object_counts)
