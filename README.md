@@ -110,10 +110,10 @@ edge profile matches the pen classifier. Tuning `minNeighbors` reduces it.
 
   ---
 
----
 
-## Performance (Raspberry Pi 5)
 
-The orientation tracker pipeline (Haar detection + Canny + Hough + filter + log)
-runs at 10 fps on Raspberry Pi 5 (1GB, no GPU) at 640×480 resolution,
-comfortably within a 100ms frame budget.
+  ## Performance (Raspberry Pi 5)
+
+  The orientation tracker pipeline (Haar detection + Canny + Hough + filter + log)
+  runs at 10 fps on Raspberry Pi 5 (1GB, no GPU) at 640×480 resolution,
+  comfortably within a 100ms frame budget.
