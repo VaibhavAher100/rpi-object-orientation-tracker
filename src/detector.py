@@ -82,8 +82,8 @@ def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
 
         cv2.line(cropped_image, (x1_l, y1_l), (x2_l, y2_l), (0, 0, 255), 2)
 
-        angle_deg = theta * 180 / np.pi
-        angle = angle_deg - 180 if angle_deg > 180 else angle_deg
+       # cv2.HoughLines returns theta in [0, pi), so angle_deg is already in [0, 180)
+        angle = theta * 180 / np.pi
 
         cv2.putText(
             image, f"{angle:.1f}", (10,
