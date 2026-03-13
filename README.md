@@ -16,10 +16,9 @@ at FAU Erlangen-Nürnberg.
 
 - Raspberry Pi 5 (1GB)
 - Raspberry Pi HQ Camera
-- GPIO button (pin 6) for quit
 
 Laptop mode is supported via `cv2.VideoCapture` — set `USE_PICAMERA = False`
-in `detector.py`.
+in `detector.py`, or pass `--no-picamera` via CLI.
 
 ---
 
