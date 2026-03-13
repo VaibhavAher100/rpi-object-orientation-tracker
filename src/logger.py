@@ -15,7 +15,9 @@ def log_result(
     Creates the file and any missing parent directories if they do not exist yet.
     """
 
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    dirpath = os.path.dirname(filepath)
+    if dirpath:
+        os.makedirs(dirpath, exist_ok=True)
     file_exists = os.path.isfile(filepath)
 
     with open(filepath, "a", newline="") as f:
