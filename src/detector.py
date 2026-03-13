@@ -165,9 +165,9 @@ def run(args) -> None:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             if first_detection:
                 raw_angle = hough_transform(x, y, w, h, frame)
-            if raw_angle >= 0:
-                filtered_angle = update_filter(window, raw_angle)
-            first_detection = False
+                if raw_angle >= 0:
+                    filtered_angle = update_filter(window, raw_angle)
+                first_detection = False
 
         log_result(args.log, time.time(), raw_angle,
                    filtered_angle, object_count)
