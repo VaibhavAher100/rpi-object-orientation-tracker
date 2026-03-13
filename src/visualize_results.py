@@ -22,6 +22,10 @@ def load_results(filepath: str) -> tuple:
             filtered_angles.append(float(row["filtered_angle"]))
             object_counts.append(int(row["object_count"]))
 
+    if not timestamps:
+        print("No data in CSV. Run detector.py first.")
+        return None, None, None, None
+
     # normalise timestamps to start at 0
     t0 = timestamps[0]
     timestamps = [t - t0 for t in timestamps]
@@ -62,4 +66,5 @@ def plot_results(timestamps: list, raw_angles: list, filtered_angles: list, obje
 if __name__ == "__main__":
     timestamps, raw_angles, filtered_angles, object_counts = load_results(
         LOG_FILE)
-    plot_results(timestamps, raw_angles, filtered_angles, object_counts)
+    if timestamps is not None:
+        plot_results(timestamps, raw_angles, filtered_angles, object_counts)

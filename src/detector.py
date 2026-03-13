@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 import os
+import argparse
 from collections import deque
 
 from angle_filter import update_filter
@@ -11,17 +12,39 @@ from logger import log_result
 # Paths — resolved from repo root regardless of where the script is called from
 # -----------------------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VIDEO_SOURCE = os.path.join(BASE_DIR, "foreground.mp4")
-CASCADE_XML = os.path.join(BASE_DIR, "classifiers",
-                           "pen_vertical_classifier.xml")
-LOG_FILE = os.path.join(BASE_DIR, "results", "detections.csv")
 
-# -----------------------------------------------------------------------------
-# Set to True when running on RPi5 with Picamera2
-# Set to False to use a video file or laptop webcam instead
-# -----------------------------------------------------------------------------
-USE_PICAMERA = False
-WINDOW_SIZE = 5
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="RPi5 Object Orientation Tracker")
+    parser.add_argument(
+        "--cascade",
+        default=os.path.join(BASE_DIR, "classifiers",
+                             "pen_vertical_classifier.xml"),
+        help="Path to Haar cascade XML file"
+    )
+    parser.add_argument(
+        "--source",
+        default=os.path.join(BASE_DIR, "foreground.mp4"),
+        help="Video file path or camera index (default: foreground.mp4)"
+    )
+    parser.add_argument(
+        "--log",
+        default=os.path.join(BASE_DIR, "results", "detections.csv"),
+        help="Path to output CSV log file"
+    )
+    parser.add_argument(
+        "--window",
+        type=int,
+        default=5,
+        help="Moving average filter window size (default: 5)"
+    )
+    parser.add_argument(
+        "--no-picamera",
+        action="store_true",
+        help="Use cv2.VideoCapture instead of Picamera2"
+    )
+    return parser.parse_args()
 
 
 def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
@@ -80,16 +103,18 @@ def hough_transform(x: int, y: int, w: int, h: int, image: np.ndarray) -> float:
     return -1.0
 
 
-def run() -> None:
+def run(args) -> None:
     """
     Main detection loop. Reads frames, detects objects, measures orientation,
     applies moving average filter, logs results to CSV.
     """
-    clf = cv2.CascadeClassifier(CASCADE_XML)
+    clf = cv2.CascadeClassifier(args.cascade)
     if clf.empty():
-        raise RuntimeError(f"Could not load cascade: {CASCADE_XML}")
+        raise RuntimeError(f"Could not load cascade: {args.cascade}")
 
-    if USE_PICAMERA:
+    use_picamera = not args.no_picamera
+
+    if use_picamera:
         from picamera2 import Picamera2
         picam2 = Picamera2()
         picam2.configure(picam2.create_preview_configuration(
@@ -98,16 +123,21 @@ def run() -> None:
         picam2.start()
         time.sleep(1)
     else:
-        cap = cv2.VideoCapture(VIDEO_SOURCE)
+        source = args.source
+        try:
+            source = int(source)
+        except ValueError:
+            pass
+        cap = cv2.VideoCapture(source)
         if not cap.isOpened():
-            raise RuntimeError(f"Could not open video source: {VIDEO_SOURCE}")
+            raise RuntimeError(f"Could not open video source: {source}")
 
-    window = deque(maxlen=WINDOW_SIZE)
+    window = deque(maxlen=args.window)
 
     cv2.namedWindow("detector", cv2.WINDOW_NORMAL)
 
     while True:
-        if USE_PICAMERA:
+        if use_picamera:
             frame = picam2.capture_array()
             if frame.shape[2] == 4:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
@@ -138,14 +168,14 @@ def run() -> None:
             if raw_angle >= 0:
                 filtered_angle = update_filter(window, raw_angle)
 
-        log_result(LOG_FILE, time.time(), raw_angle,
+        log_result(args.log, time.time(), raw_angle,
                    filtered_angle, object_count)
 
         cv2.imshow("detector", frame)
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
-    if USE_PICAMERA:
+    if use_picamera:
         picam2.stop()
     else:
         cap.release()
@@ -154,4 +184,5 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    run()
+    args = parse_args()
+    run(args)
