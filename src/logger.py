@@ -1,5 +1,6 @@
 import csv
 import time
+import os
 
 
 def log_result(
@@ -11,10 +12,10 @@ def log_result(
 ) -> None:
     """
     Append one row of detection results to a CSV file.
-    Creates the file with a header if it does not exist yet.
+    Creates the file and any missing parent directories if they do not exist yet.
     """
-    import os
 
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
     file_exists = os.path.isfile(filepath)
 
     with open(filepath, "a", newline="") as f:
