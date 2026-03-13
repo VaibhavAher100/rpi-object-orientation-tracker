@@ -17,9 +17,7 @@ at FAU Erlangen-Nürnberg.
 - Raspberry Pi 5 (1GB)
 - Raspberry Pi HQ Camera
 
-Laptop mode is supported via `cv2.VideoCapture` — set `USE_PICAMERA = False`
-in `detector.py`, or pass `--no-picamera` via CLI.
-
+Laptop mode is supported via `cv2.VideoCapture` — pass `--no-picamera` when running.
 ---
 
 ## How it works
