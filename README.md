@@ -37,7 +37,7 @@ Laptop mode is supported via `cv2.VideoCapture` — pass `--no-picamera` when ru
 git clone https://github.com/VaibhavAher100/rpi-object-orientation-tracker
 cd rpi-object-orientation-tracker
 pip install -r requirements.txt
-python src/detector.py
+python src/detector.py --no-picamera
 ```
 
 **On RPi5:**
@@ -110,22 +110,10 @@ edge profile matches the pen classifier. Tuning `minNeighbors` reduces it.
 
   ---
 
+---
+
 ## Performance (Raspberry Pi 5)
 
-Measured on Raspberry Pi 5 (1GB) during BiViP lab sessions.
-
-| Metric | Value |
-|--------|-------|
-| Resolution | 640 × 480 |
-| Frame rate | 10 fps |
-| GrabCut per frame (5 iterations) | ~1.0 sec |
-| GrabCut per frame (1 iteration) | ~0.42 sec |
-| Alpha channel conversion | ~0.015 sec |
-| Pipeline target | real-time at 10 fps |
-
-GrabCut is not part of the orientation tracker pipeline — timings are from
-the BiViP Lab 9 background replacement exercise on the same hardware,
-included here as embedded CV performance reference.
-
-The orientation tracker itself (Haar detection + Canny + Hough + filter + log)
-runs comfortably within a 100ms frame budget at 10 fps on RPi5.
+The orientation tracker pipeline (Haar detection + Canny + Hough + filter + log)
+runs at 10 fps on Raspberry Pi 5 (1GB, no GPU) at 640×480 resolution,
+comfortably within a 100ms frame budget.
