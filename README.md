@@ -45,7 +45,7 @@ python src/detector.py --no-picamera
 git clone https://github.com/VaibhavAher100/rpi-object-orientation-tracker
 cd rpi-object-orientation-tracker
 pip install -r requirements-rpi.txt
-# set USE_PICAMERA = True in src/detector.py
+# remove --no-picamera flag when running on RPi5
 python src/detector.py
 ```
 
@@ -108,11 +108,11 @@ edge profile matches the pen classifier. Tuning `minNeighbors` reduces it.
   This is by design for simplicity — a multi-object tracker would require
   separate angle tracking per object ID.
 
-  ---
+---
 
 
 
-  ## Performance (Raspberry Pi 5)
+## Performance (Raspberry Pi 5)
 
   The orientation tracker pipeline (Haar detection + Canny + Hough + filter + log)
   runs at 10 fps on Raspberry Pi 5 (1GB, no GPU) at 640×480 resolution,
