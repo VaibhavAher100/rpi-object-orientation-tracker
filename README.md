@@ -73,6 +73,15 @@ results/
 Object count panel shows detection events. Angle panels show raw and
 filtered orientation in degrees. -1.0 means no object detected that frame.
 
+### Detection frames from RPi5
+
+| Best case | Partial detection | Worst case |
+|-----------|------------------|------------|
+| ![](results/detection_sample_1.png) | ![](results/detection_sample_2.png) | ![](results/detection_sample_3.png) |
+
+The cable on the right edge is a known false positive source — the vertical
+edge profile matches the pen classifier. Tuning `minNeighbors` reduces it.
+
 ---
 
 ## Known limitations
