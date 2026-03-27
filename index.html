@@ -24,6 +24,34 @@
   --body: 'Outfit', sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #181410;
+    --paper2: #201a14;
+    --paper3: #2a221a;
+    --ink: #f0e4d0;
+    --ink2: #c8a888;
+    --ink3: #7a6045;
+    --red: #e84030;
+    --red2: #ff5540;
+    --border: #3a2e20;
+  }
+  .hero-right { background: #0c0a08 !important; }
+  .sidebar-title { color: #3a2e20 !important; }
+  .p-name { color: #8a7055 !important; }
+  .p-detail { color: #4a3820 !important; }
+  .pipe-step { border-bottom-color: #1a1410 !important; }
+  .code-block { background: #0c0a08 !important; }
+  .cb-c { color: #3a2e20 !important; }
+  .s-idx { background: #201a14 !important; }
+  .s-name { background: #201a14 !important; }
+  .lim-body code { background: #2a221a !important; }
+  .author-band { background: #0c0a08 !important; }
+  .ab-name { color: #f0e4d0 !important; }
+  .ab-desc { color: #4a3820 !important; }
+  .ab-link { color: #c8a888 !important; border-color: #3a2e20 !important; }
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -38,15 +66,18 @@ body {
 .masthead {
   border-bottom: 3px solid var(--ink);
   padding: 14px 48px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   background: var(--paper);
 }
 
 .mast-left {
+  grid-column: 2;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .mast-title {
@@ -65,6 +96,8 @@ body {
 }
 
 .mast-nav {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   gap: 28px;
 }
@@ -432,7 +465,10 @@ footer {
 }
 
 @media (max-width: 760px) {
-  .masthead, .hero-left, .wrap { padding-left: 24px; padding-right: 24px; }
+  .masthead { padding-left: 24px; padding-right: 24px; grid-template-columns: 1fr; }
+  .mast-left { grid-column: 1; }
+  .mast-nav { grid-column: 1; justify-self: start; margin-top: 12px; }
+  .hero-left, .wrap { padding-left: 24px; padding-right: 24px; }
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
   .stage { grid-template-columns: 44px 1fr; }
@@ -465,11 +501,11 @@ footer {
       <div class="kicker">Computer Vision · Embedded Linux · Python</div>
       <h1>RPi5<br>Object<br><em>Orientation</em><br>Tracker</h1>
       <p class="hero-lede">
-        Wrote a real-time angle tracker for objects in a camera feed.
-        Runs at <b>10 fps on a Raspberry Pi 5 with 1GB RAM</b> — no GPU, no cloud.
-        Haar cascade detection, Canny + Hough angle measurement,
-        sliding window filter, CSV logging. Built as an extension of
-        the BiViP lab course at FAU.
+        Real-time orientation measurement for objects in a live camera feed,
+        running on a <b>Raspberry Pi 5 with 1GB RAM</b> — no GPU, no cloud.
+        Haar cascade detection, Canny edge + Hough transform for angle,
+        sliding window filter for stable output, CSV logging.
+        Extended from the BiViP image processing lab at FAU Erlangen-Nürnberg.
       </p>
     </div>
 
