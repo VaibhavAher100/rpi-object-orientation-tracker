@@ -29,3 +29,4 @@ htmlcov/
 *.mp4
 results/*.csv
 test_results.csv
+CONTRIBUTING.md
