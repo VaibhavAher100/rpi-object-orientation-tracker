@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPi5 Object Orientation Tracker — Vaibhav Aher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fira+Mono:wght@400;500;700&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #faf7f2;
+  --paper2: #f3ede3;
+  --paper3: #ede5d8;
+  --ink: #1c1714;
+  --ink2: #4a3f35;
+  --ink3: #8a7a6a;
+  --red: #c8250e;
+  --red2: #e83520;
+  --blue: #0a3a7a;
+  --blue2: #1a5ac8;
+  --border: #d4c8b8;
+  --serif: 'DM Serif Display', serif;
+  --mono: 'Fira Mono', monospace;
+  --body: 'Outfit', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  border-bottom: 3px solid var(--ink);
+  padding: 14px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper);
+}
+
+.mast-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.mast-title {
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+}
+
+.mast-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.mast-nav {
+  display: flex;
+  gap: 28px;
+}
+
+.mast-nav a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.15s;
+}
+
+.mast-nav a:hover { color: var(--red); }
+
+/* ── HERO ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 0;
+  border-bottom: 2px solid var(--ink);
+  min-height: 80vh;
+  align-items: stretch;
+}
+
+.hero-left {
+  padding: 64px 48px;
+  border-right: 2px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 80px;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 36px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.hero-lede {
+  font-size: 17px;
+  color: var(--ink2);
+  font-weight: 300;
+  max-width: 520px;
+  margin-bottom: 40px;
+  line-height: 1.65;
+}
+
+.hero-lede b { color: var(--ink); font-weight: 500; }
+
+.spec-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.spec-item { display: flex; flex-direction: column; gap: 3px; }
+
+.spec-k {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.spec-v {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.spec-v.red { color: var(--red); }
+
+.btns { display: flex; gap: 12px; }
+
+.btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  transition: all 0.15s;
+  display: inline-block;
+}
+
+.btn-fill { background: var(--ink); color: var(--paper); }
+.btn-fill:hover { background: var(--red); border-color: var(--red); }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn-ghost:hover { background: var(--paper3); }
+
+/* Hero right: pipeline sidebar */
+.hero-right {
+  padding: 48px 32px;
+  background: var(--ink);
+  color: var(--paper2);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2a2520;
+}
+
+.pipe-step {
+  display: flex;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid #1a1510;
+  align-items: flex-start;
+}
+
+.pipe-step:last-child { border-bottom: none; }
+
+.p-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--red2);
+  font-weight: 700;
+  width: 18px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.p-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: #d4c8b4;
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.p-detail {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #5a4e40;
+  line-height: 1.5;
+}
+
+/* ── CONTENT ── */
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 36px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.s-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: 36px;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+p { color: var(--ink2); margin-bottom: 16px; line-height: 1.7; }
+p:last-child { margin-bottom: 0; }
+
+/* ── CODE ── */
+.code-block {
+  background: var(--ink);
+  color: #c8b89a;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.9;
+  padding: 24px 28px;
+  margin: 24px 0;
+  overflow-x: auto;
+}
+
+.cb-c { color: #4a3e30; }
+.cb-k { color: var(--red2); }
+.cb-v { color: #7aaa44; }
+.cb-n { color: #6699dd; }
+
+/* ── STAGES ── */
+.stage-list {
+  border: 2px solid var(--ink);
+  margin: 24px 0;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 44px 180px 1fr;
+  border-bottom: 1px solid var(--border);
+}
+
+.stage:last-child { border-bottom: none; }
+
+.s-idx {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  border-right: 1px solid var(--border);
+  background: var(--paper2);
+}
+
+.s-name {
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  background: var(--paper2);
+}
+
+.s-detail {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--ink2);
+  display: flex;
+  align-items: center;
+}
+
+/* ── LIMITATIONS ── */
+.lim-list { margin: 16px 0; }
+
+.lim {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.lim:last-child { border-bottom: none; }
+
+.lim-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  width: 72px;
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+
+.lim-body { flex: 1; font-size: 14px; color: var(--ink2); }
+.lim-body b { color: var(--ink); font-weight: 500; }
+.lim-body code { font-family: var(--mono); font-size: 11px; background: var(--paper3); padding: 1px 5px; }
+
+/* ── AUTHOR BAND ── */
+.author-band {
+  background: var(--ink);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+}
+
+.ab-name {
+  font-family: var(--serif);
+  font-size: 32px;
+  color: var(--paper);
+  margin-bottom: 8px;
+}
+
+.ab-desc {
+  font-size: 13px;
+  color: #5a4e40;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.ab-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.ab-link {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--paper2);
+  text-decoration: none;
+  border: 1px solid #3a2e20;
+  padding: 8px 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.ab-link:hover { border-color: var(--red2); color: var(--red2); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 24px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.06em;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 760px) {
+  .masthead, .hero-left, .wrap { padding-left: 24px; padding-right: 24px; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .stage { grid-template-columns: 44px 1fr; }
+  .s-detail { display: none; }
+  .author-band { grid-template-columns: 1fr; padding: 32px 24px; }
+  footer { padding: 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── MASTHEAD ── -->
+<div class="masthead">
+  <div class="mast-left">
+    <span class="mast-title">Vaibhav Aher · Portfolio</span>
+    <span class="mast-sub">FAU Erlangen · M.Sc. ICT Embedded Systems</span>
+  </div>
+  <nav class="mast-nav">
+    <a href="https://github.com/VaibhavAher100/rpi-object-orientation-tracker">GitHub</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#limits">Limitations</a>
+    <a href="https://vaibhavaher100.github.io/stm32-vitals-monitor/">STM32 →</a>
+  </nav>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="kicker">Computer Vision · Embedded Linux · Python</div>
+      <h1>RPi5<br>Object<br><em>Orientation</em><br>Tracker</h1>
+      <p class="hero-lede">
+        Wrote a real-time angle tracker for objects in a camera feed.
+        Runs at <b>10 fps on a Raspberry Pi 5 with 1GB RAM</b> — no GPU, no cloud.
+        Haar cascade detection, Canny + Hough angle measurement,
+        sliding window filter, CSV logging. Built as an extension of
+        the BiViP lab course at FAU.
+      </p>
+    </div>
+
+    <div>
+      <div class="spec-row">
+        <div class="spec-item">
+          <span class="spec-k">Hardware</span>
+          <span class="spec-v">Raspberry Pi 5</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k">Speed</span>
+          <span class="spec-v red">10 fps</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k">Resolution</span>
+          <span class="spec-v">640 × 480</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k">Stack</span>
+          <span class="spec-v">Python · OpenCV</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k">Frame budget</span>
+          <span class="spec-v">100 ms</span>
+        </div>
+      </div>
+      <div class="btns">
+        <a href="https://github.com/VaibhavAher100/rpi-object-orientation-tracker" class="btn btn-fill" target="_blank">View on GitHub →</a>
+        <a href="#pipeline" class="btn btn-ghost">How it works</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="sidebar-title">Pipeline · 10 stages</div>
+    <div class="pipe-step"><span class="p-n">01</span><span class="p-name">Camera input</span><span class="p-detail">Picamera2 · 640×480 · XRGB8888</span></div>
+    <div class="pipe-step"><span class="p-n">02</span><span class="p-name">Preprocess</span><span class="p-detail">Gaussian blur 5×5 · grayscale</span></div>
+    <div class="pipe-step"><span class="p-n">03</span><span class="p-name">Detection</span><span class="p-detail">Haar cascade · scaleFactor 1.1</span></div>
+    <div class="pipe-step"><span class="p-n">04</span><span class="p-name">ROI crop</span><span class="p-detail">±200px margin · boundary check</span></div>
+    <div class="pipe-step"><span class="p-n">05</span><span class="p-name">Canny edges</span><span class="p-detail">Tlow=50 · Thigh=150 · apt=3</span></div>
+    <div class="pipe-step"><span class="p-n">06</span><span class="p-name">Hough lines</span><span class="p-detail">Select line closest to 90°</span></div>
+    <div class="pipe-step"><span class="p-n">07</span><span class="p-name">Angle</span><span class="p-detail">theta → degrees · 0–180 range</span></div>
+    <div class="pipe-step"><span class="p-n">08</span><span class="p-name">Filter</span><span class="p-detail">deque window=5 · clear on miss</span></div>
+    <div class="pipe-step"><span class="p-n">09</span><span class="p-name">CSV log</span><span class="p-detail">timestamp · raw · filtered · count</span></div>
+    <div class="pipe-step"><span class="p-n">10</span><span class="p-name">Display</span><span class="p-detail">Bounding box · angle overlay</span></div>
+  </div>
+</div>
+
+<!-- ── QUICK START ── -->
+<div class="wrap">
+<div class="section">
+  <div class="section-head">
+    <span class="s-num">—</span>
+    <h2>Run it</h2>
+  </div>
+
+  <div class="code-block">
+<span class="cb-c"># clone</span>
+<span class="cb-k">git</span> clone https://github.com/VaibhavAher100/rpi-object-orientation-tracker
+<span class="cb-k">cd</span> rpi-object-orientation-tracker
+
+<span class="cb-c"># laptop — no Pi required for testing</span>
+<span class="cb-k">pip</span> install -r requirements.txt
+<span class="cb-k">python</span> src/detector.py --no-picamera
+
+<span class="cb-c"># on the Pi</span>
+<span class="cb-k">pip</span> install -r requirements-rpi.txt
+<span class="cb-k">python</span> src/detector.py
+
+<span class="cb-c"># plot the angle trace after a run</span>
+<span class="cb-k">python</span> src/visualize_results.py
+
+<span class="cb-c"># tune the detector</span>
+<span class="cb-k">python</span> src/detector.py --window <span class="cb-n">8</span> --cascade classifiers/pen_vertical_classifier.xml
+  </div>
+</div>
+</div>
+
+<!-- ── PIPELINE ── -->
+<div class="wrap">
+<div class="section" id="pipeline">
+  <div class="section-head">
+    <span class="s-num">—</span>
+    <h2>Pipeline detail</h2>
+  </div>
+  <p>Each stage feeds the next. The design choice that matters: in stage 06, the code selects the Hough line closest to vertical (90°) rather than blindly taking the first line returned. Blindly taking lines[0] gave unstable angle readings when multiple lines were detected.</p>
+
+  <div class="stage-list">
+    <div class="stage"><div class="s-idx">01</div><div class="s-name">Camera input</div><div class="s-detail">Picamera2 captures 640×480 in XRGB8888. --no-picamera flag swaps in cv2.VideoCapture for laptop testing.</div></div>
+    <div class="stage"><div class="s-idx">02</div><div class="s-name">Preprocess</div><div class="s-detail">Gaussian blur (5×5, σ=0) then grayscale. Reduces noise before the cascade fires.</div></div>
+    <div class="stage"><div class="s-idx">03</div><div class="s-name">Detection</div><div class="s-detail">detectMultiScale — scaleFactor=1.1, minNeighbors=5, minSize=(40,40). Returns a list of bounding boxes.</div></div>
+    <div class="stage"><div class="s-idx">04</div><div class="s-name">ROI crop</div><div class="s-detail">Expand the bounding box by ±200px / ±100px. Falls back to ±40px / ±20px when near the frame edge.</div></div>
+    <div class="stage"><div class="s-idx">05</div><div class="s-name">Canny edges</div><div class="s-detail">Applied to the cropped grayscale region. Tlow=50, Thigh=150, apertureSize=3.</div></div>
+    <div class="stage"><div class="s-idx">06</div><div class="s-name">Hough lines</div><div class="s-detail">cv2.HoughLines on the edge image. Selects the line with theta closest to π/2 (vertical). Returns -1.0 if nothing found.</div></div>
+    <div class="stage"><div class="s-idx">07</div><div class="s-name">Angle</div><div class="s-detail">theta × 180/π. HoughLines returns theta in [0, π) so the result is already in [0, 180) degrees.</div></div>
+    <div class="stage"><div class="s-idx">08</div><div class="s-name">Moving average</div><div class="s-detail">deque(maxlen=5). Window clears when object count drops to zero — prevents stale angle bleeding into the next detection.</div></div>
+    <div class="stage"><div class="s-idx">09</div><div class="s-name">CSV log</div><div class="s-detail">One row per frame: unix timestamp, raw_angle, filtered_angle, object_count. Header written on first call.</div></div>
+    <div class="stage"><div class="s-idx">10</div><div class="s-name">Display</div><div class="s-detail">Green bounding box. Angle printed top-left in red. cv2.imshow — press Q to quit.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ── LIMITATIONS ── -->
+<div class="wrap">
+<div class="section" id="limits">
+  <div class="section-head">
+    <span class="s-num">—</span>
+    <h2>Limitations</h2>
+  </div>
+  <p>The worst-case detection sample (three false positives) is committed to <code style="font-family: var(--mono); font-size: 12px; background: var(--paper3); padding: 1px 5px;">results/</code>. These limitations are not hidden.</p>
+
+  <div class="lim-list">
+    <div class="lim">
+      <span class="lim-tag">False +</span>
+      <div class="lim-body"><b>Cable edge fires the classifier.</b> A vertical cable on the right of the frame has a similar edge profile to a vertical pen. Raising <code>minNeighbors</code> reduces it but also misses weaker real detections.</div>
+    </div>
+    <div class="lim">
+      <span class="lim-tag">Laptop</span>
+      <div class="lim-body"><b>Classifier was not trained for general objects.</b> When testing on a person video on laptop, it fires occasionally on jacket and collar edges, returning 0.0 angle. The cascade knows vertical pens, not everything.</div>
+    </div>
+    <div class="lim">
+      <span class="lim-tag">Multi</span>
+      <div class="lim-body"><b>Only the first detection gets an angle.</b> <code>object_count</code> reflects all bounding boxes but <code>raw_angle</code> and <code>filtered_angle</code> come from the first box only. Tracking angle per object ID was out of scope.</div>
+    </div>
+    <div class="lim">
+      <span class="lim-tag">Light</span>
+      <div class="lim-body"><b>Low contrast breaks detection.</b> The cascade needs reasonable lighting contrast. Tuning <code>scaleFactor</code> down helps sensitivity but slows the pipeline.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── AUTHOR ── -->
+<div class="author-band">
+  <div>
+    <div class="ab-name">Vaibhav Aher</div>
+    <p class="ab-desc">M.Sc. ICT · Embedded Systems · FAU Erlangen-Nürnberg<br>B.E. Electronics and Telecommunication · University of Mumbai</p>
+  </div>
+  <div class="ab-links">
+    <a href="https://github.com/VaibhavAher100" class="ab-link">GitHub</a>
+    <a href="https://github.com/VaibhavAher100/rpi-object-orientation-tracker" class="ab-link">This repo</a>
+    <a href="https://vaibhavaher100.github.io/stm32-vitals-monitor/" class="ab-link">STM32 project</a>
+  </div>
+</div>
+
+<footer>
+  <span>RPi5 Object Orientation Tracker · FAU Erlangen · 2025–2026</span>
+  <span>Python · OpenCV · Haar · Canny · Hough · 10 fps · 1GB RPi5</span>
+</footer>
+
+</body>
+</html>
