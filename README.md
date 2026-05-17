@@ -5,7 +5,7 @@ Detects objects using a Haar cascade classifier, measures their angle using
 Canny edge detection and Hough transform, smooths the output with a moving
 average filter, and logs everything to CSV.
 
-Built as a portfolio project extending work from the BiViP lab course
+Extends work from the BiViP lab course
 (Laborpraktikum Bild- und Videosignalverarbeitung auf eingebetteten Plattformen - Laboratory Practicum: Image and Video Signal Processing on Embedded Platforms)
 at FAU Erlangen-Nürnberg.
 
@@ -82,6 +82,19 @@ results/
 
 Object count panel shows detection events. Angle panels show raw and
 filtered orientation in degrees. -1.0 means no object detected that frame.
+
+### CSV output format
+
+```
+timestamp,raw_angle,filtered_angle,object_count
+1773397702.248,-1.0,-1.0,0
+1773397702.345,0.0,0.0,1
+1773399506.118,91.99999,45.999996,1
+1773418474.526,8.0,8.0,2
+1773418474.558,9.0,8.5,2
+```
+
+`-1.0` means no object detected that frame. Timestamp is Unix epoch.
 
 ### Detection frames from RPi5
 
